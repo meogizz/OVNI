@@ -77,7 +77,7 @@
 
         ::selection { background: #f1e05a; color: #000; }
 
-        /* --- 3. FOND CRAYON (Modifié) --- */
+        /* --- 3. FOND CRAYON --- */
         #bg-container {
             position: fixed;
             top: 0;
@@ -89,14 +89,13 @@
             overflow: hidden;
         }
 
-        /* J'ai renommé la classe en .pencil-bg et ajusté la taille */
         .pencil-bg {
             position: absolute;
-            width: 200px; /* Un peu plus grand pour qu'on voit bien le crayon */
+            width: 200px;
             height: auto;
             fill: none; 
             stroke: var(--ink-color);
-            stroke-width: 3; /* Trait un peu plus fin pour faire "mine de crayon" */
+            stroke-width: 3;
             stroke-linecap: round;
             stroke-linejoin: round;
             opacity: 0.08; 
@@ -319,7 +318,6 @@
             font-weight: 500;
         }
 
-        /* J'ai gardé ton animation mais renommé pour être propre */
         @keyframes floatPencil {
             0% { transform: translate(-50vw, -50vh) rotate(0deg) scale(1); }
             25% { transform: translate(40vw, -10vh) rotate(20deg) scale(1.1); }
@@ -426,6 +424,7 @@
 
     <footer>
         <p>&copy; 2026 La Revue Universitaire OVNI. Fait avec du thé, des madeleines et un peu de JS.</p>
+        <p style="font-size: 0.9em; margin-top: 0.5rem; opacity: 0.8;">Avec la participation de Vincent Vivès et Alexis Tudal</p>
     </footer>
 
     <script>
@@ -443,7 +442,7 @@
                 "*Orgueil Véritable Non Identifié",
                 "*Orgue Voluptueux Non Identifié",
                 "*Ombre Viellissante Non Identifiée",
-                "*Obstacle Vulgaire Non identifié", "*Oligosaccharidométriquement Ventriloquiquement Noninstitutionnalisablement Inconstitutionnalisablement"
+                "*Obstacle Vulgaire Non identifié"
             ];
 
             let phraseIndex = 0; 
