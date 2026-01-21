@@ -58,16 +58,14 @@
             overflow-x: hidden;
             
             /* --- LE SHADER (L'effet de fond mouvant) --- */
-            /* C'est ici que la magie opère : un grand dégradé qui bouge */
             background: radial-gradient(circle at 50% 50%, 
                 var(--shader-1) 0%, 
                 var(--shader-2) 50%, 
                 var(--shader-3) 100%);
-            background-size: 300% 300%; /* On zoome dans le dégradé pour que ce soit flou */
-            animation: paperBreathing 15s ease infinite; /* Animation lente */
+            background-size: 300% 300%; 
+            animation: paperBreathing 15s ease infinite; 
         }
 
-        /* L'animation du fond qui "respire" */
         @keyframes paperBreathing {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -77,10 +75,9 @@
         a { text-decoration: none; color: inherit; transition: color 0.3s;}
         ul { list-style: none; }
 
-        /* Surligneur Jaune */
         ::selection { background: #f1e05a; color: #000; }
 
-        /* --- 3. FOND PLUME --- */
+        /* --- 3. FOND CRAYON (Modifié) --- */
         #bg-container {
             position: fixed;
             top: 0;
@@ -92,17 +89,18 @@
             overflow: hidden;
         }
 
-        .quill-bg {
+        /* J'ai renommé la classe en .pencil-bg et ajusté la taille */
+        .pencil-bg {
             position: absolute;
-            width: 180px; 
+            width: 200px; /* Un peu plus grand pour qu'on voit bien le crayon */
             height: auto;
             fill: none; 
             stroke: var(--ink-color);
-            stroke-width: 4; 
+            stroke-width: 3; /* Trait un peu plus fin pour faire "mine de crayon" */
             stroke-linecap: round;
             stroke-linejoin: round;
             opacity: 0.08; 
-            animation: floatProust 45s infinite linear;
+            animation: floatPencil 45s infinite linear;
             top: 50%;
             left: 50%;
         }
@@ -116,14 +114,12 @@
             align-items: center;
             position: sticky;
             top: 0;
-            /* Fond semi-transparent pour voir le shader passer dessous */
             background-color: rgba(249, 246, 240, 0.85); 
-            backdrop-filter: blur(5px); /* Petit flou moderne */
+            backdrop-filter: blur(5px); 
             z-index: 100;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        /* Ajustement header mode sombre */
         @media (prefers-color-scheme: dark) {
             header { background-color: rgba(26, 26, 26, 0.85); }
         }
@@ -209,7 +205,6 @@
         .card-numero {
             border: 2px solid var(--ink-color);
             padding: 1.5rem;
-            /* Fond légèrement transparent pour l'effet shader */
             background: rgba(255, 255, 255, 0.5); 
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -221,7 +216,7 @@
         .card-numero:hover {
             transform: translateY(-5px) rotate(1deg);
             box-shadow: 8px 8px 0px var(--accent-color);
-            background: var(--bg-color); /* Devient opaque au survol */
+            background: var(--bg-color); 
         }
 
         .cover-image {
@@ -324,7 +319,8 @@
             font-weight: 500;
         }
 
-        @keyframes floatProust {
+        /* J'ai gardé ton animation mais renommé pour être propre */
+        @keyframes floatPencil {
             0% { transform: translate(-50vw, -50vh) rotate(0deg) scale(1); }
             25% { transform: translate(40vw, -10vh) rotate(20deg) scale(1.1); }
             50% { transform: translate(-10vw, 40vh) rotate(-10deg) scale(0.9); }
@@ -332,12 +328,11 @@
             100% { transform: translate(-50vw, -50vh) rotate(0deg) scale(1); }
         }
 
-        /* Mobile */
         @media (max-width: 768px) {
             header { flex-direction: column; text-align: center; gap: 1.5rem; padding: 1.5rem;}
             section { padding: 3rem 1.5rem; border-left: none; }
             h2 { font-size: 3rem; }
-            .quill-bg { width: 120px; }
+            .pencil-bg { width: 140px; }
             html { scroll-padding-top: 220px; }
         }
     </style>
@@ -345,8 +340,10 @@
 <body>
 
     <div id="bg-container">
-        <svg class="quill-bg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
-             <path d="M95,230 C95,230 105,180 115,130 C125,80 130,20 130,20 C130,20 150,40 165,80 C180,120 170,170 145,200 C120,230 95,230 95,230 Z M115,130 C115,130 135,120 155,125 M118,110 C118,110 138,100 158,105 M122,90 C122,90 142,80 162,85 M125,70 C125,70 145,60 165,65" fill="none" />
+        <svg class="pencil-bg" viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+             <path d="M70,190 L180,80 L200,100 L90,210 L70,190 Z" fill="none" />
+             <path d="M70,190 L50,230 L90,210" fill="none" />
+             <path d="M170,90 L190,110" fill="none" />
         </svg>
     </div>
 
@@ -358,7 +355,7 @@
         <nav>
             <ul>
                 <li><a href="#Derniers-Numeros">Derniers numéros</a></li>
-                <li><a href="#A-Propos">A propos</a></li>
+                <li><a href="#apropos">A propos</a></li>
                 <li><a href="#Nous-Ecrire">Nous écrire</a></li>
             </ul>
         </nav>
@@ -375,6 +372,7 @@
                     <span class="meta">Janvier 2026 — No 1</span>
                     <h3>À la recherche du pain perdu</h3>
                     <p>Le dernier numéro t'as capté chakal</p>
+                    
                     <a href="Donna_Lee.pdf" target="_blank" class="btn-download">Télécharger le PDF</a>
                 </article>
 
@@ -445,7 +443,7 @@
                 "*Orgueil Véritable Non Identifié",
                 "*Orgue Voluptueux Non Identifié",
                 "*Ombre Viellissante Non Identifiée",
-                "*Obstacle Vulgaire Non identifié"
+                "*Obstacle Vulgaire Non identifié", "*Oligosaccharidométriquement Ventriloquiquement Noninstitutionnalisablement Inconstitutionnalisablement"
             ];
 
             let phraseIndex = 0; 
@@ -489,4 +487,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
