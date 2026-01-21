@@ -1,0 +1,27 @@
+/* --- STYLE POUR LE CURSEUR ENCRE (JS) --- */
+.ink-cursor {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: var(--ink-color);
+    border-radius: 50%;
+    pointer-events: none; /* Important pour pouvoir cliquer à travers */
+    transform: translate(-50%, -50%);
+    opacity: 0.6;
+    mix-blend-mode: multiply; /* Effet d'encre qui s'imprègne */
+    z-index: 9999;
+    transition: width 0.2s, height 0.2s;
+    filter: blur(2px); /* Effet tache diffuse */
+}
+
+/* Quand on clique, la tache grossit un peu */
+.ink-cursor.active {
+    width: 35px;
+    height: 35px;
+    opacity: 0.8;
+}
+
+/* On cache le curseur sur mobile car il n'y a pas de souris */
+@media (max-width: 768px) {
+    .ink-cursor { display: none; }
+}

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA REVUE OVNI - Littérature et expérimentation</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛸</text></svg>">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. VARIABLES --- */
+        :root {
+            --bg-color: #F9F6F0; /* Crème de base */
+            --ink-color: #3E3E3B; /* Gris crayon */
+            --accent-color: #B0B0A9;
+            
+            /* COULEURS DU SHADER (Dégradé subtil) */
+            --shader-1: #F9F6F0;
+            --shader-2: #efeadd; /* Un peu plus foncé */
+            --shader-3: #ffffff; /* Un peu plus clair */
+        }
+
+        /* Mode Sombre */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --ink-color: #e6e6e6;
+                --accent-color: #666666;
+                
+                /* Shader sombre (Gris anthracite mouvant) */
+                --shader-1: #1a1a1a;
+                --shader-2: #252525;
+                --shader-3: #111111;
+            }
+            img, .cover-image { opacity: 0.9; }
+        }
+
+        /* --- 2. CONFIGURATION GÉNÉRALE --- */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 140px; 
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--ink-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            overflow-x: hidden;
+            
+            /* --- LE SHADER (L'effet de fond mouvant) --- */
+            /* C'est ici que la magie opère : un grand dégradé qui bouge */
+            background: radial-gradient(circle at 50% 50%, 
+                var(--shader-1) 0%, 
+                var(--shader-2) 50%, 
+                var(--shader-3) 100%);
+            background-size: 300% 300%; /* On zoome dans le dégradé pour que ce soit flou */
+            animation: paperBreathing 15s ease infinite; /* Animation lente */
+        }
+
+        /* L'animation du fond qui "respire" */
+        @keyframes paperBreathing {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        a { text-decoration: none; color: inherit; transition: color 0.3s;}
+        ul { list-style: none; }
+
+        /* Surligneur Jaune */
+        ::selection { background: #f1e05a; color: #000; }
+
+        /* --- 3. FOND PLUME --- */
+        #bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .quill-bg {
+            position: absolute;
+            width: 180px; 
+            height: auto;
+            fill: none; 
+            stroke: var(--ink-color);
+            stroke-width: 4; 
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0.08; 
+            animation: floatProust 45s infinite linear;
+            top: 50%;
+            left: 50%;
+        }
+
+        /* --- 4. HEADER & NAV --- */
+        header {
+            padding: 2rem 3rem;
+            border-bottom: 3px solid var(--ink-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            /* Fond semi-transparent pour voir le shader passer dessous */
+            background-color: rgba(249, 246, 240, 0.85); 
+            backdrop-filter: blur(5px); /* Petit flou moderne */
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Ajustement header mode sombre */
+        @media (prefers-color-scheme: dark) {
+            header { background-color: rgba(26, 26, 26, 0.85); }
+        }
+
+        .logo { display: flex; flex-direction: column; }
+
+        h1 {
+            font-size: 2.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--ink-color);
+            margin-top: 5px;
+            opacity: 0.8;
+            min-height: 1.5rem;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        
+        .tagline::after {
+            content: '|';
+            display: inline-block;
+            margin-left: 2px;
+            animation: blink 0.8s infinite;
+            font-weight: 400;
+            opacity: 1;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        nav ul { display: flex; gap: 2.5rem; font-weight: 500; }
+
+        nav a:hover {
+            color: var(--accent-color);
+            text-decoration: line-through;
+        }
+
+        /* --- 5. SECTIONS --- */
+        section {
+            padding: 2rem 3rem; 
+            padding-bottom: 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-left: 2px solid var(--ink-color);
+            min-height: 85vh;
+        }
+
+        h2 {
+            font-size: 4.5rem;
+            margin-bottom: 4rem;
+            font-weight: 300;
+            font-style: italic;
+            border-bottom: 2px solid var(--ink-color);
+            display: inline-block;
+            padding-bottom: 1rem;
+        }
+        
+        h3 {
+            font-size: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            text-decoration: underline;
+            text-decoration-color: var(--accent-color);
+        }
+
+        /* --- 6. KIOSQUE (GRILLE) --- */
+        .grid-numeros {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 4rem;
+        }
+
+        .card-numero {
+            border: 2px solid var(--ink-color);
+            padding: 1.5rem;
+            /* Fond légèrement transparent pour l'effet shader */
+            background: rgba(255, 255, 255, 0.5); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            .card-numero { background: rgba(255, 255, 255, 0.05); }
+        }
+
+        .card-numero:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 8px 8px 0px var(--accent-color);
+            background: var(--bg-color); /* Devient opaque au survol */
+        }
+
+        .cover-image {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 3 / 4; 
+            object-fit: cover;
+            border: 2px solid var(--ink-color);
+            margin-bottom: 1.5rem;
+            filter: grayscale(100%) contrast(1.2); 
+            transition: filter 0.5s ease;
+        }
+
+        .card-numero:hover .cover-image { filter: grayscale(0%); }
+
+        .meta {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+            font-weight: 500;
+        }
+
+        .btn-download {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.8rem 2rem;
+            background: var(--ink-color);
+            color: var(--bg-color);
+            border: 2px solid var(--ink-color);
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .btn-download:hover {
+            background: transparent;
+            color: var(--ink-color);
+            border-style: dashed;
+        }
+
+        /* --- 7. CONTACT --- */
+        .content-text {
+            max-width: 850px;
+            font-size: 1.6rem;
+            text-align: justify;
+        }
+
+        .contact-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            flex: 1;
+            max-width: 600px;
+            border: 2px dashed var(--ink-color);
+            padding: 3rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.4);
+            transition: transform 0.3s;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .contact-card { background: rgba(255, 255, 255, 0.05); }
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            background: var(--bg-color);
+            border-style: solid;
+        }
+
+        .btn-action {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            background-color: var(--ink-color);
+            color: var(--bg-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: 2px solid var(--ink-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-action:hover {
+            background-color: transparent;
+            color: var(--ink-color);
+        }
+
+        /* --- 8. FOOTER & ANIMATIONS --- */
+        footer {
+            border-top: 3px solid var(--ink-color);
+            padding: 3rem;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        @keyframes floatProust {
+            0% { transform: translate(-50vw, -50vh) rotate(0deg) scale(1); }
+            25% { transform: translate(40vw, -10vh) rotate(20deg) scale(1.1); }
+            50% { transform: translate(-10vw, 40vh) rotate(-10deg) scale(0.9); }
+            75% { transform: translate(30vw, 10vh) rotate(15deg) scale(1.05); }
+            100% { transform: translate(-50vw, -50vh) rotate(0deg) scale(1); }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            header { flex-direction: column; text-align: center; gap: 1.5rem; padding: 1.5rem;}
+            section { padding: 3rem 1.5rem; border-left: none; }
+            h2 { font-size: 3rem; }
+            .quill-bg { width: 120px; }
+            html { scroll-padding-top: 220px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-container">
+        <svg class="quill-bg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+             <path d="M95,230 C95,230 105,180 115,130 C125,80 130,20 130,20 C130,20 150,40 165,80 C180,120 170,170 145,200 C120,230 95,230 95,230 Z M115,130 C115,130 135,120 155,125 M118,110 C118,110 138,100 158,105 M122,90 C122,90 142,80 162,85 M125,70 C125,70 145,60 165,65" fill="none" />
+        </svg>
+    </div>
+
+    <header>
+        <div class="logo">
+            <h1>La Revue <span style="font-style:italic; border-bottom: 2px solid var(--accent-color);">OVNI</span></h1>
+            <p class="tagline"></p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#Derniers-Numeros">Derniers numéros</a></li>
+                <li><a href="#apropos">A propos</a></li>
+                <li><a href="#Nous-Ecrire">Nous écrire</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="Derniers-Numeros">
+            <h2>Derniers Numéros</h2>
+            <div class="grid-numeros">
+                
+                <article class="card-numero">
+                    <img src="couv1.jpg" alt="Couverture du numéro 1" class="cover-image">
+                    
+                    <span class="meta">Janvier 2026 — No 1</span>
+                    <h3>À la recherche du pain perdu</h3>
+                    <p>Le dernier numéro t'as capté chakal</p>
+                    
+                    <a href="Donna_Lee.pdf" target="_blank" class="btn-download">Télécharger le PDF</a>
+                </article>
+
+            </div>
+        </section>
+
+        <section id="apropos">
+            <h2>A propos</h2>
+            <div class="content-text">
+                
+                <h3>Qui sommes-nous ?</h3>
+                <p>
+                    Nous sommes <strong>Nathan Dromard</strong> et <strong>Matteo Graziano</strong>. C’est sur les bancs de la fac de Lettres, entre deux ateliers d'écriture créative, que l'idée a germé. 
+                    Nous cherchions une plateforme capable d'accueillir non seulement le résultat final, mais l'esprit de recherche propre aux étudiants et aux jeunes auteurs. Faute de la trouver, nous l'avons créée.
+                </p>
+
+                <h3>Notre Ligne Éditoriale</h3>
+                <p>
+                    <strong>OVNI</strong> se veut être un laboratoire. Nous croyons que la littérature actuelle est hybride. C'est pourquoi notre appel à textes est permanent et ouvert à tous, sans distinction de parcours.
+                </p>
+                <p>
+                    Le roman fleuve nous intéresse autant que l'éclat poétique. Le théâtre nous passionne autant que les jeux typographiques. Si votre projet joue avec les mots, la forme ou le fond, nous voulons le lire. N'ayez pas peur de nous surprendre : c'est exactement ce que nous attendons.
+                </p>
+                <h3> Notre fonctionnement</h3>
+                <p> 
+                    Un nouveau numéro apparait chaque mois, donc tu as toutes tes chances d'être publié ! Il te suffit simplement de nous envoyer ton texte, et nous nous chargeons du reste. Rien à payer, tout à gagner. 
+                </p>
+            </div>
+        </section>
+
+        <section id="Nous-Ecrire">
+            <h2>Nous écrire</h2>
+            <div class="content-text">
+                <p>
+                    Vous avez une longue phrase complexe à nous soumettre ? Un pastiche ? 
+                    Notre comité de lecture se réunit quand l'emploi du temps le permet.
+                </p>
+                
+                <div class="contact-container">
+                    <div class="contact-card">
+                        <h3>Correspondance & Envois</h3>
+                        <p>Pour nous envoyer vos manuscrits, projets, mots d'amour ou réclamations.</p>
+                        <a href="mailto:ovni@uphf.fr" class="btn-action">
+                            <span>✉</span> ovni@uphf.fr
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 La Revue Universitaire OVNI. Fait avec du thé, des madeleines et un peu de JS.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const taglineElement = document.querySelector('.tagline');
+            
+            const phrases = [
+                "*Objet Valenciennois Non Identifié", 
+                "*Objet Violent Non Identifié",
+                "*Objet Verbal Non Identifié",
+                "*Oeuvre Vivante Non Identifiée",
+                "*Orage Visuel Non Identifié",
+                "*Oubli Volontaire Non Identifié",
+                "*Objet Variable Non Indentifié",
+                "*Orgueil Véritable Non Identifié",
+                "*Orgue Voluptueux Non Identifié",
+                "*Ombre Viellissante Non Identifiée",
+                "*Obstacle Vulgaire Non identifié"
+            ];
+
+            let phraseIndex = 0; 
+            let charIndex = 0; 
+            let isDeleting = false; 
+            let typeSpeed = 50; 
+
+            function typeEffect() {
+                const currentPhrase = phrases[phraseIndex];
+                
+                if (isDeleting) {
+                    charIndex--;
+                    typeSpeed = 30; 
+                } else {
+                    charIndex++;
+                    typeSpeed = 80; 
+                }
+
+                taglineElement.textContent = currentPhrase.substring(0, charIndex);
+
+                if (!isDeleting && charIndex === currentPhrase.length) {
+                    typeSpeed = 1500; 
+                    isDeleting = true;
+                } 
+                else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    typeSpeed = 500; 
+                    
+                    let newIndex;
+                    do {
+                       newIndex = Math.floor(Math.random() * phrases.length);
+                    } while (newIndex === phraseIndex);
+                    
+                    phraseIndex = newIndex;
+                }
+
+                setTimeout(typeEffect, typeSpeed);
+            }
+            
+            typeEffect();
+        });
+    </script>
+</body>
+</html>
