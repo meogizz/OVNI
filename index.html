@@ -12,24 +12,21 @@
     <style>
         /* --- 1. VARIABLES --- */
         :root {
-            --bg-color: #F9F6F0; /* Crème de base */
-            --ink-color: #3E3E3B; /* Gris crayon */
+            --bg-color: #F9F6F0; 
+            --ink-color: #3E3E3B; 
             --accent-color: #B0B0A9;
             
-            /* COULEURS DU SHADER (Dégradé subtil) */
             --shader-1: #F9F6F0;
-            --shader-2: #efeadd; /* Un peu plus foncé */
-            --shader-3: #ffffff; /* Un peu plus clair */
+            --shader-2: #efeadd; 
+            --shader-3: #ffffff; 
         }
 
-        /* Mode Sombre */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-color: #1a1a1a;
                 --ink-color: #e6e6e6;
                 --accent-color: #666666;
                 
-                /* Shader sombre (Gris anthracite mouvant) */
                 --shader-1: #1a1a1a;
                 --shader-2: #252525;
                 --shader-3: #111111;
@@ -57,7 +54,6 @@
             line-height: 1.6;
             overflow-x: hidden;
             
-            /* --- LE SHADER (L'effet de fond mouvant) --- */
             background: radial-gradient(circle at 50% 50%, 
                 var(--shader-1) 0%, 
                 var(--shader-2) 50%, 
@@ -194,10 +190,11 @@
             text-decoration-color: var(--accent-color);
         }
 
-        /* --- 6. KIOSQUE (GRILLE) --- */
+        /* --- 6. GRILLE (NUMÉROS & ARTICLES) --- */
         .grid-numeros {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            /* J'ai réduit le minmax à 280px pour avoir des cartes moins larges */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 4rem;
         }
 
@@ -206,6 +203,9 @@
             padding: 1.5rem;
             background: rgba(255, 255, 255, 0.5); 
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Centrer le contenu si l'image est petite */
+            display: flex;
+            flex-direction: column;
         }
         
         @media (prefers-color-scheme: dark) {
@@ -218,13 +218,22 @@
             background: var(--bg-color); 
         }
 
+        /* --- MODIFICATION IMAGES PLUS PETITES --- */
         .cover-image {
             width: 100%;
+            /* Limite la largeur maximale à 200px */
+            max-width: 200px; 
             height: auto;
             aspect-ratio: 3 / 4; 
             object-fit: cover;
             border: 2px solid var(--ink-color);
+            
+            /* Pour centrer l'image */
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
             margin-bottom: 1.5rem;
+
             filter: grayscale(100%) contrast(1.2); 
             transition: filter 0.5s ease;
         }
@@ -242,12 +251,13 @@
 
         .btn-download {
             display: inline-block;
-            margin-top: 1.5rem;
+            margin-top: auto; /* Pousse le bouton vers le bas */
             padding: 0.8rem 2rem;
             background: var(--ink-color);
             color: var(--bg-color);
             border: 2px solid var(--ink-color);
             font-weight: 700;
+            text-align: center;
             transition: all 0.3s;
         }
 
@@ -352,15 +362,16 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#Derniers-Numeros">Derniers numéros</a></li>
+                <li><a href="#kiosque">Derniers numéros</a></li>
+                <li><a href="#articles">Articles</a></li>
                 <li><a href="#apropos">A propos</a></li>
-                <li><a href="#Nous-Ecrire">Nous écrire</a></li>
+                <li><a href="#contact">Nous écrire</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section id="Derniers-Numeros">
+        <section id="kiosque">
             <h2>Derniers Numéros</h2>
             <div class="grid-numeros">
                 
@@ -371,10 +382,27 @@
                     <h3>À la recherche du pain perdu</h3>
                     <p>Le dernier numéro t'as capté chakal</p>
                     
-                    <a href="1.pdf" target="_blank" class="btn-download">Télécharger le PDF</a>
+                    <a href="Donna_Lee.pdf" target="_blank" class="btn-download">Télécharger le PDF</a>
                 </article>
 
             </div>
+        </section>
+
+        <section id="articles">
+            <h2>Articles de Recherche</h2>
+            <div class="grid-numeros">
+                
+                <article class="card-numero">
+                    <img src="11.jpg" alt="Illustration article" class="cover-image">
+                    
+                    <span class="meta">Critique — Janvier 2026</span>
+                    <h3>Mémoire de recherche : Georges Bataille et la question du lieu dans une analyse structurelle topographique.</h3>
+                    <p></p>.</p>
+                    
+                    <a href="Bataille.pdf" class="btn-download">Lire l'article</a>
+                </article>
+
+                 </div>
         </section>
 
         <section id="apropos">
@@ -390,8 +418,9 @@
                 <h3>Notre Ligne Éditoriale</h3>
                 <p>
                     <strong>OVNI</strong> se veut être un laboratoire d'expression libre. Nous croyons que la littérature se vit autant par la création que par la réflexion. C'est pourquoi notre appel est permanent et ouvert à tous : nous souhaitons offrir une tribune à quiconque désire partager son univers, sans distinction de parcours.
-
-</p>Que vous proposiez une création littéraire (roman, poésie, théâtre, jeux typographiques) ou un article critique, nous voulons vous lire. Si votre projet joue avec les mots ou qu'il les analyse, n'hésitez pas. Nous donnons sa chance à chaque voix singulière. N'ayez pas peur de nous surprendre : c'est exactement ce que nous attendons.
+                </p>
+                <p>
+                    Que vous proposiez une création littéraire (roman, poésie, théâtre, jeux typographiques) ou un article critique, nous voulons vous lire. Si votre projet joue avec les mots ou qu'il les analyse, n'hésitez pas. Nous donnons sa chance à chaque voix singulière. N'ayez pas peur de nous surprendre : c'est exactement ce que nous attendons.
                 </p>
                 <h3> Notre fonctionnement</h3>
                 <p> 
@@ -400,7 +429,7 @@
             </div>
         </section>
 
-        <section id="Nous-Ecrire">
+        <section id="contact">
             <h2>Nous écrire</h2>
             <div class="content-text">
                 <p>
@@ -423,7 +452,7 @@
 
     <footer>
         <p>&copy; 2026 La Revue Universitaire OVNI. Fait avec du thé, des madeleines et un peu de JS.</p>
-        <p style="font-size: 0.9em; margin-top: 0.5rem; opacity: 0.8;">Avec la participation de l'Université Polytechnique des Hauts-de-France, Vincent Vivès et Alexis Tudal</p>
+        <p style="font-size: 0.9em; margin-top: 0.5rem; opacity: 0.8;">Avec la participation de Vincent Vivès et Alexis Tudal</p>
     </footer>
 
     <script>
